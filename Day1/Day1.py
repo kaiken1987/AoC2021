@@ -1,6 +1,6 @@
 
 def part1():
-    f = open("C:\\Code\\GIT_ROOT\\AdventOfCode\\2021\\AoC2021\\Day1\\Input.txt", "r")
+    f = open("Day1\\Input.txt", "r")
     count = 0
     prev = -1
     for x in f:
@@ -13,7 +13,7 @@ def part1():
 
 
 def part2():
-    f = open("C:\\Code\\GIT_ROOT\\AdventOfCode\\2021\\AoC2021\\Day1\\Input.txt", "r")
+    f = open("Day1\\Input.txt", "r")
     count = 0
     prev1 = -1
     prev2 = -1
