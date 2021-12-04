@@ -3,16 +3,18 @@ f = open("Day4\\Input.txt", "r")
 numbers = f.readline().strip().split(",")
 
 boards = []
+winnerOrder = []
 board = []
 marker = "-"
 
 def checkBingo(board):
     rowBingo = False
     colBingo = False
-    for i in range(5):
+    
+    for i in range(len(board)):
         r = True
         c = True
-        for j in range(5):
+        for j in range(len(board)):
             r = r & (board[i][j]==marker)
             c = c & (board[j][i]==marker)
         rowBingo = rowBingo | r
@@ -59,18 +61,20 @@ if len(board) == 5:
 def part1():
     val = -1
     for num in numbers:
-        for b in boards:
+        for i in range(len(boards)):
+            b = boards[i]
             checkNum(num,b)
             if checkBingo(b):
-                printBoard(b)
                 val = sumBoard(b)
                 val *= int(num)
-                break
-        if val >-1:
-            break
+                winnerOrder.append(val)
+                boards[i] = []
+    val = winnerOrder[0]
     print( "Part 1: "+  str(val) )
+    printBoard(b)
 def part2():
-    print( "Part 2")
+    val = winnerOrder[-1]
+    print( "Part 2: "+  str(val) )
 
 part1() 
 part2() 
