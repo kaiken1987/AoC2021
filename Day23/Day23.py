@@ -1,4 +1,4 @@
-f = open("Day7\\TestInput.txt", "r")
+f = open("Day23\\TestInput.txt", "r")
 
 def part1():
     print( "Part 1")
