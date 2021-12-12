@@ -43,6 +43,11 @@ def part1():
     print(f"Flashes: {flashed}")
 def part2():
     print( "Part 2")
+    flashed = 0
+    while True:
+        flashed += 1 
+        if( step()== 100):
+            break
+    print(f"Flashes: {flashed}")
 
-part1() 
 part2() 
