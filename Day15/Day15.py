@@ -1,51 +1,89 @@
-input = []
-graph = {}
+import sys
 
+nodes = []
+graph = {}
+class node:
+   value = -1
+   visited = False
+   neighbors = []
+   def __init__(self, v):
+       self.value = v
 def getNeighbors(x,y,input):
    result = []
-   for x1 in range(x-1,x+1):
-      result.append([x1,y-1])
-      result.append([x1,y+1])
-   result.append([x-1,y])
-   result.append([x+1,y])
-   for a in result:
-      if(a[1]<0 or a[1]>=len(input)):
-         result.remove(a)
-      elif(a[0]<0 or a[0]>=len(input[a[1]])):
-         result.remove(a)
-    return result
+   if y>1:
+      result.append(input[y-1][x])
+      #if x>1:
+      #   result.append(input[y-1][x-1])
+      #if x+1<len(input[y]):
+      #   result.append(input[y-1][x+1])
+   if y+1<len(input):
+      result.append(input[y+1][x])
+      #if x>1:
+      #   result.append(input[y+1][x-1])
+      #if x+1<len(input[y]):
+      #   result.append(input[y+1][x+1])
+   if x>1:
+      result.append(input[y][x-1])
+   if x+1<len(input[y]):
+      result.append(input[y][x+1])
+   return result
 
 def loadFile():
-   f = open("Day15\\TestInput.txt", "r")
+   f = open("Day15\\Input.txt", "r")
    for x in f:
-      input.append([int(y) for y in x])
+      x = x.strip()
+      row = []
+      for y in x:
+         row.append(node(int(y)))
+      nodes.append(row)
 
-   for y in range(len(input)):
-      for x in range(len(input[y])):
-         neigh = getNeighbors(x,y,input)
-         graph[input[y][x]] = neigh
+   for y in range(len(nodes)):
+      for x in range(len(nodes[y])):
+         nodes[y][x].neighbors = getNeighbors(x,y,nodes)
 
 
 def Dijkstra():
    dist = []
    prev = []
    Q = []
-   for y in range(len(input)):
-      for x in range(len(input[y])):
+   source = 0
+   for y in range(len(nodes)):
+      for x in range(len(nodes[y])):
          dist.append(2e30)
          prev.append(None)
-         Q.append(input[y][x])
-   dist[0] = 0
-
-   while len(Q)>0:
-      u = Q[0]
-      Q.remove(u)
-      neigh = getNeighbors(u[0],u[1],input)
-      for 
+         Q.append(nodes[y][x])
+   target = Q[-1]
+   dist[source] = 0
+   curr = 0
+   unvisted = len(Q)
+   while unvisted>0:
+      u = None
+      d = 2e30
+      best = -1
+      for i in range(len(Q)):
+         if not Q[i].visited and dist[i]<d:
+            u = Q[i]
+            d = dist[i]
+            best = i
+      if u == None: #all visted
+         break
+      u.visited = True
+      unvisted -= 1
+      for n in u.neighbors:
+         i = Q.index(n)
+         d2 = d+n.value
+         if d2 < dist[i]:
+            dist[i] = d2
+            prev[i] = u
+   return dist, prev
 
 
 def part1():
-    print( "Part 1")
+    loadFile()
+    dist, prev = Dijkstra()
+    risk = dist[-1]
+    print( f"Part 1: Risk:{risk}")
+
 def part2():
     print( "Part 2")
 
