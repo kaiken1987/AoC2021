@@ -5,6 +5,9 @@ graph = {}
 class node:
    value = -1
    visited = False
+   dist = 2e30
+   prev = None
+   idx = -1
    neighbors = []
    def __init__(self, v):
        self.value = v
@@ -41,47 +44,61 @@ def loadFile():
       for x in range(len(nodes[y])):
          nodes[y][x].neighbors = getNeighbors(x,y,nodes)
 
+class priorityQueue:
+   queue = []
+   def updateNode(self,node):
+      idx = node.idx
+      if(idx <0):
+         return
+      while( idx>0 and self.queue[idx].dist>self.queue[idx-1].dist):
+         temp = self.queue[idx]
+         self.queue[idx] = self.queue[idx-1]
+         self.queue[idx-1] = temp
+         self.queue[idx-1].idx = idx-1
+         self.queue[idx].idx = idx
+         idx -= 1
+
+   def popfront(self):
+      result = self.queue[0]
+      for i in range(1,len(self.queue)):
+         self.queue[i-1] = self.queue[i]
+      self.queue.pop()
+      result.idx = -1
+      return result
+
+   def addNode(self, node):
+      node.idx = len(self.queue)
+      self.queue.append(node)
+
+
 
 def Dijkstra():
-   dist = []
-   prev = []
-   Q = []
+   Q = priorityQueue()
    source = 0
    for y in range(len(nodes)):
       for x in range(len(nodes[y])):
-         dist.append(2e30)
-         prev.append(None)
-         Q.append(nodes[y][x])
-   target = Q[-1]
-   dist[source] = 0
+         Q.queue.append(nodes[y][x])
+   target = Q.queue[-1]
+   Q.queue[0].dist = 0
    curr = 0
-   unvisted = len(Q)
-   while unvisted>0:
-      u = None
-      d = 2e30
-      best = -1
-      for i in range(len(Q)):
-         if not Q[i].visited and dist[i]<d:
-            u = Q[i]
-            d = dist[i]
-            best = i
-      if u == None: #all visted
+   unvisted = len(Q.queue)
+   while len(Q.queue)>0:
+      u = Q.popfront()
+      if u == target:
          break
-      u.visited = True
       unvisted -= 1
       for n in u.neighbors:
-         i = Q.index(n)
-         d2 = d+n.value
-         if d2 < dist[i]:
-            dist[i] = d2
-            prev[i] = u
-   return dist, prev
+         d2 = u.dist+n.value
+         if d2 < n.dist:
+            n.dist = d2
+            n.prev = u
+            Q.updateNode(n)
+   return target.dist
 
 
 def part1():
     loadFile()
-    dist, prev = Dijkstra()
-    risk = dist[-1]
+    risk = Dijkstra()
     print( f"Part 1: Risk:{risk}")
 
 def part2():
