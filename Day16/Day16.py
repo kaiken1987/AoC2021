@@ -1,5 +1,6 @@
-fname = "Day16\\TestInput.txt"
+fname = "Day16\\Input.txt"
 input = []
+versSum = 0
 hex2Bi = {	
     '0': "0000",
     '1': "0001",
@@ -81,7 +82,34 @@ def processModule(bits):
             for i in range(numSub):
                 n, bits = processModule(bits)
                 nums.append(n)
-        return nums, bits
+        result = 0
+        if type == 0: #sum
+            for n in nums:
+                result += n
+        elif type == 1: #product
+            result = 1
+            for n in nums:
+                result *= n
+        elif type == 2: #min
+            result = nums[0]
+            for n in nums:
+                if n < result:
+                    result = n
+        elif type == 3: #max
+            result = nums[0]
+            for n in nums:
+                if n > result:
+                    result = n
+        elif type == 5: #greater than
+            if nums[0]>nums[1]:
+                result = 1
+        elif type == 6: #less than
+            if nums[0]<nums[1]:
+                result = 1
+        elif type == 7: #equal to
+            if nums[0]==nums[1]:
+                result = 1
+        return result, bits
 
 
 def part1():
@@ -98,7 +126,7 @@ def part2():
         versSum = 0
         bits = expand(line)
         nums, bits = processModule(bits)
-    print( "Part 2")
+        print( f"Part 2 {nums}")
 
 #part1() 
 part2() 
