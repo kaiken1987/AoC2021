@@ -1,7 +1,7 @@
 import math
 
-example = [range(20,30), range(-10,-4)]
-input = [range(14,50), range(-267,-224)]#14..50, y=-267..-225
+example = [range(20,31), range(-10,-4)]
+input = [range(14,51), range(-267,-224)]#14..50, y=-267..-225
 class Probe:
     target = []
     position=[0,0]
@@ -43,12 +43,10 @@ def checkNums(a,b) -> bool:
     return math.floor(a)==a or math.floor(b)==b or (math.floor(a)!=math.floor(b))
 
 def part1():
-    target = input#
+    target = input#eample
     minTX = target[0].start
-    #maxTY = target[1].start
-    #maxVY = maxTY-target[1].start
     vx = math.floor( math.sqrt(minTX*2) )
-    vy = 0#vx/2
+    vy = 0#
     maxY = 0
     bestY = 0
     while True:
@@ -73,7 +71,18 @@ def part1():
 
 
 def part2():
-    print( "Part 2")
+    target =input#
+    minTX = target[0].start
+    minvx = math.floor( math.sqrt(minTX*2) )
+    vels = []
+    for vx in range(minvx, target[0].stop):
+        for vy in range(target[1].start, 267):
+            p = Probe(target,vx,vy)
+            if p.run() :
+                vels.append([vx,vy])
 
-part1() 
+    print( f"Part 2: {len(vels)}")
+
+
+#part1() 
 part2() 
